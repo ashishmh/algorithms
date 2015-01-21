@@ -1,3 +1,7 @@
+/* In selection sort, first we select the smallest element and swap it to the first position,
+then we choose the smallest element in the remaining sub-array and swap it to the 2nd position
+and so on until the length of sub-array becomes one */
+
 #include <iostream>
 #include <cstdio>
 using namespace std;
