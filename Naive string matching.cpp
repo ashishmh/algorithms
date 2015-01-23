@@ -8,20 +8,27 @@ in the pattern match the corresponding characters in the text. */
 using namespace std;
 
 void naiveStringMatching(string str, string pattern) {
-    int n = str.length();
-    int m = pattern.length();
-    int shift, j;
-    for (shift = 0; shift <= n-m; shift++) {
-        j = 0;
-        while (j < m && str[shift+j] == pattern[j])
-            ++j;
-        if (j == m) {
-            cout<<"Substring found at pos: "<<shift+1<<endl;
-            return;
+    if (str.length() && pattern.length()) {
+        int n = str.length();
+        int m = pattern.length();
+        int s, j;
+        bool flag = false;
+        for (s=0; s <= n-m; s++) {
+            j = 0;
+            while (j < m && str[s+j] == pattern[j])
+                ++j;
+            if (j == m) {
+                flag = true;
+                cout<<"Pattern found at pos: "<<s+1<<endl;
+                continue;
+            }
         }
+        if (!flag)
+            cout<<"Pattern not found.."<<endl;
+        return;
     }
-    cout<<"Substring not found.."<<endl;
-	return;
+    cout<<"Text or pattern cannot be empty.."<<endl;
+    return;
 }
 
 int main() {
