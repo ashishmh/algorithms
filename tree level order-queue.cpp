@@ -1,5 +1,5 @@
 /* Function to perform level order/BFS traversal of tree using a queue
-The standard container classes DEQUE and LIST fulfill the requirements of QUEUE container adapter. */
+The standard container classes DEQUE and LIST fulfill the requirements of QUEUE container adaptor. */
 
 #include <iostream>
 #include <cstdio>
@@ -14,43 +14,44 @@ public:
     node* right;
     node(int data) {
         this->data = data;
-        left = NULL;
-        right = NULL;
+        left = right = NULL;
     }
 };
 
-void bfsTraversal(node* root) {
+void levelOrder(node* root) {
     deque<node*> queue;
-    bool empty = false;
-    while (!empty) {
-        if (root) {
-            cout<<root -> data<<" ";
-            if (root -> left)
-                queue.push_back(root -> left);
-            if (root -> right)
-                queue.push_back(root -> right);
-            if (!queue.empty()) {
-                root = queue.front();
-                queue.pop_front();    
-            } else
-                empty = true;
+    while (root) {
+        cout<<root -> data<<" ";
+        if (root -> left)
+            queue.push_back(root -> left);
+        if (root -> right)
+            queue.push_back(root -> right);
+        if (!queue.empty()) {
+            root = queue.front();
+            queue.pop_front();
         }
+        else return;
     }
     return;
 }
 
+node* createBinaryTree(node* root, int depth, int value) {
+    if (depth < 1)
+        return NULL;
+    root = new node(value);
+    root->left = createBinaryTree(root->left, depth-1, value*2);
+    root->right = createBinaryTree(root->right, depth-1, value*2+1);
+    return root;
+}
+
 int main() {
     freopen("input.txt","r",stdin);
-
-    node* root = new node(1);
-        root -> left = new node(2);
-        root -> right = new node(3);
-        root -> left -> left = new node(4);
-        root -> left -> right = new node(5);
-        root -> right -> left = new node(6);
-        root -> right -> right = new node(7);
-    cout<<"BFS or level order traversal: "<<endl;
-    bfsTraversal(root);
+    
+    int depth;
+    cin>>depth;
+    node* root = createBinaryTree(root, depth, 1);
+    cout<<"Level order traversal: "<<endl;
+    levelOrder(root);
     cout<<endl;
     return 0;
 }

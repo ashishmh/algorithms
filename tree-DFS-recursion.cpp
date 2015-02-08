@@ -6,52 +6,65 @@ using namespace std;
 
 class node
 {
-  	public:
-  		int data;
-		node* left  = NULL;
-		node* right = NULL;
+public:
+	int data;
+	node* left;
+	node* right;
+	node(int data) {
+		this->data = data;
+		left = right = NULL;
+	}
 };
 
+node* createBinaryTree(node* root, int depth, int value) {
+	if (depth < 1)
+		return NULL;
+	root = new node(value);
+	root->left = createBinaryTree(root->left, depth-1, value*2);
+	root->right = createBinaryTree(root->right, depth-1, value*2+1);
+	return root;
+}
+
 void preorder(node* root) {
-	if( root == NULL )
+	if (!root)
 		return;
-	cout<<root->data<<"\t";
+	cout<<root -> data<<" ";
 	preorder(root->left);
 	preorder(root->right);
+	return;
 }
 
 void inorder(node* root) {
-	if( root == NULL )
+	if (!root)
 		return;
 	inorder(root->left);
-	cout<<root->data<<"\t";
+	cout<<root -> data<<" ";
 	inorder(root->right);
+	return;
 }
 
 void postorder(node* root) {
-	if( root == NULL )
+	if (!root)
 		return;
 	postorder(root->left);
 	postorder(root->right);
-	cout<<root->data<<"\t";
+	cout<<root -> data<<" ";
+	return;
 }
 
 int main() {
-	node* root = NULL;
-	node n1,n2,n3,n4,n5,n6,n7;
-	root = &n1;
-	n1.data = 1; n2.data = 2; n3.data = 3; n4.data = 4; n5.data = 5; n6.data = 6; n7.data = 7;
-	n1.left   = &n2;
-	n1.right  = &n3;
-	n2.left   = &n4;
-	n2.right  = &n5;
-	n3.left   = &n6;
-	n3.right  = &n7;
-	cout<<"Preorder traversal  : ";
+    freopen("input.txt","r",stdin);
+
+    int depth;
+    cin>>depth;
+    node* root;
+    root = createBinaryTree(root, depth, 1);
+    cout<<"Preorder traversal  : ";
 	preorder(root);
 	cout<<endl<<"Inorder traversal   : ";
 	inorder(root);
 	cout<<endl<<"Postorder traversal : ";
 	postorder(root);
-	return 0;
+	cout<<endl;
+    return 0;
 }
