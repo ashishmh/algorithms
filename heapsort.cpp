@@ -4,15 +4,14 @@
 #include <cstdio>
 using namespace std;
 
+void buildMaxHeap(int*, int);
 void heapifyMax(int* arr, int, int);
 void swap(int* arr, int, int);
-void buildMaxHeap(int*, int);
 
 void heapSort(int* arr, int size) {
-	int array_length, heap_size;
-	array_length = heap_size = size;
+	int heap_size = size;
 	buildMaxHeap(arr, heap_size);
-	for (int i=array_length-1; i>0; i--) {
+	for (int i=size-1; i>0; i--) {
 		swap(arr, 0, i);
 		heap_size = heap_size-1;
 		heapifyMax(arr, heap_size, 0);
