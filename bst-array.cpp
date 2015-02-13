@@ -94,7 +94,7 @@ void treeInsert(BST* T, int key) {
 	if (key <= root->data)
 		root->left = new node(key);
 	else root->right = new node(key);
-	++T->size;
+	++(T->size);
 	return;
 }
 
@@ -104,7 +104,7 @@ void treeDelete(BST* T, int key) {
 		return;
 	node* ptr = root;
 	node* p;
-	node* parent;
+	node* parent = NULL;
 	while (ptr && ptr->data != key) {
 		parent = ptr;
 		if (key <= ptr->data)
@@ -112,18 +112,18 @@ void treeDelete(BST* T, int key) {
 		else ptr = ptr->right;
 	}
 	p = ptr;
-	
+
 	if (!p->left) {
-		// if (!parent)
-			// root = p->right;
-		if (p == parent->left)
+		if (!parent)
+			T->root = p->right;
+		else if (p == parent->left)
 			parent->left = p->right;
 		else parent->right = p->right;
 	}
 	else if (!p->right) {
-		// if (!parent)
-			// root = p->left;
-		if (p == parent->left)
+		if (!parent)
+			T->root = p->left;
+		else if (p == parent->left)
 			parent->left = p->left;
 		else parent->right = p->left;
 	}
@@ -134,9 +134,9 @@ void treeDelete(BST* T, int key) {
 			succ_parent = succ;
 			succ = succ->left;
 		}
-		// if (!parent)
-			// root = succ;
-		if (p == parent->left)
+		if (!parent)
+			T->root = succ;
+		else if (p == parent->left)
 			parent->left = succ;
 		else parent->right = succ;
 		if (succ == succ_parent->left)
@@ -145,7 +145,7 @@ void treeDelete(BST* T, int key) {
 		succ->left = p->left;
 		succ->right = p->right;
 	}
-	--T->size;
+	--(T->size);
 	return;
 }
 
@@ -215,8 +215,8 @@ int main() {
     inorder(T);
 	cout<<endl<<"New size of tree: "<<T->size<<endl;
 
-    cout<<endl<<"Deleting element 17 in BST : ";
-    treeDelete(T, 17);
+    cout<<endl<<"Deleting element 15 in BST : ";
+    treeDelete(T, 15);
     inorder(T);
 	cout<<endl<<"Size of tree after deleting: "<<T->size<<endl;
     cout<<endl;
