@@ -1,4 +1,4 @@
-// Create a graph using Adjacency list representation and print it
+// Create a undirected graph using Adjacency list representation and print it
 
 #include <iostream>
 #include <cstdio>
@@ -10,7 +10,7 @@ public:
 	Node* next;
 	Node(int data) {
 		this->data = data;
-		next = NULL;
+		this->next = NULL;
 	}
 };
 
@@ -18,18 +18,17 @@ class LinkedList {
 public:
 	Node* head;
 	LinkedList() {
-		head = NULL;
+		this->head = NULL;
 	}
 };
 
 class Graph {
 public:
 	int V;
-	LinkedList* adj[];
+	LinkedList* adj;
 	Graph(int V) {
 		this->V = V;
-		for (int i=0; i<V; i++)
-			adj[i] = new LinkedList();
+		this->adj = new LinkedList[V];
 	}
 };
 
@@ -37,21 +36,23 @@ void addEdge(Graph* G, int u, int v);
 void printGraph(Graph* G);
 
 void addEdge(Graph* G, int u, int v) {
+	// adding edge (u,v)
 	Node* new_node = new Node(v);
-	new_node->next = G->adj[u]->head;
-	G->adj[u]->head = new_node;
+	new_node->next = G->adj[u].head;
+	G->adj[u].head = new_node;
 
+	// adding edge (v,u)
 	new_node = new Node(u);
-	new_node->next = G->adj[v]->head;
-	G->adj[v]->head = new_node;
+	new_node->next = G->adj[v].head;
+	G->adj[v].head = new_node;
 	return;
 }
 
 void printGraph(Graph* G) {
 	for (int i = 0; i < G->V; i++) {
-		Node* head = G->adj[i]->head;
+		Node* head = G->adj[i].head;
 		cout<<"\nAdjacency list of vertex "<<i<<"\nHead ";
-		while (head->next) {
+		while (head) {
 			cout<<" -> "<<head->data;
 			head = head->next;
 		}
