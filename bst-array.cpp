@@ -114,8 +114,13 @@ void treeDelete(BST* T, int key) {
 			ptr = ptr->left;
 		else ptr = ptr->right;
 	}
-	p = ptr;
+	// checking if key exists in BST
+	if (!ptr) {
+		cout<<"Element doesnt exist in BST.."<<endl;
+		return;
+	}
 
+	p = ptr;
 	if (!p->left) {
 		if (!parent)
 			T->root = p->right;
