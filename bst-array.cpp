@@ -84,8 +84,11 @@ node* treeSuccessor(BST* T, node* x) {
 
 void treeInsert(BST* T, int key) {
 	node* root = T->root;
-	if (!root)
+	if (!root) {
+		T->root = new node(key);
+		++(T->size);
 		return;
+	}
 	while (root->left || root->right) {
 		if (key <= root->data)
 			root = root->left;
@@ -208,9 +211,9 @@ int main() {
 	else cout<<"No successor.."<<endl;
 
 	cout<<endl<<"Old size of tree: "<<T->size<<endl;
-    cout<<"Inserting element 1, 10 and 21 in BST : ";
+    cout<<"Inserting element 1, 8 and 21 in BST : ";
 	treeInsert(T, 1);
-	treeInsert(T, 10);
+	treeInsert(T, 8);
 	treeInsert(T, 21);
     inorder(T);
 	cout<<endl<<"New size of tree: "<<T->size<<endl;
