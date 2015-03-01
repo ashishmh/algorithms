@@ -51,7 +51,7 @@ bool Graph::removeEdge(int head, int tail) {
 		if (edgeList[i].first == tail)
 			break;
 	if (i == edgeList.size()) {						// edge not found
-		cout<<"edge not found.. "<<endl;
+		cout<<"edge not found.."<<endl;
 		return false;
 	}	
 	edgeList.erase(edgeList.begin()+i);
@@ -85,6 +85,6 @@ int main() {
 	cout<<"weight of edge (2,3): "<<G->getWeightOfEdge(2,3)<<endl;
 	cout<<"removing edge (1,3): ";G->removeEdge(1,3);
 	cout<<"removing edge (4,2): ";G->removeEdge(1,3);
-	cout<<endlch;
+	cout<<endl;
 	return 0;
 }
