@@ -1,90 +1,103 @@
-// Perform depth first search on a directed acyclic graph
-
 #include <iostream>
-#include <cstdio>
-#include <list>
+#include <vector>
+#include <deque>
 using namespace std;
 
-class Vertex {
-public:
-	int id;
-	Vertex(int id) {
-		this->id = id;
-	}
-};
-
 class Graph {
+private:
+	vector<vector<pair<int,int> > > G;      // data structure to store graph
+	int vertex_size;						// total no of vertices
+
 public:
-	int V;			// no of vertices
-	list<Vertex>* adj;
-	Graph(int V) {
-		this->V = V;
-		adj = new list<Vertex>[V];
-	}
+	Graph(int vertex_size);
+	vector<pair<int,int> > adjListOfVertex(int vertex);
+	void addEdge(int head, int tail, int weight);
+	void printGraph();
+	void BFS(int source);					// only traverses vertices reachable from source
+	void DFS(int source);					// only traverses vertices reachable from source
+	void DfsUtil(int source, bool* visited);
 };
 
-void BFS();
-void DFS();
-void addEdge(Graph* G, int u, int v);
-void printGraph(Graph* G);
+Graph::Graph(int vertex_size) {
+	this->vertex_size = vertex_size;
+	this->G.resize(vertex_size);
+}
 
-void BFS(Graph* G, list<Vertex>::iterator s) {
-	bool* visited = new bool[G->V];
-	for (int i = 0; i < G->V; i++)
+vector<pair<int,int> > Graph::adjListOfVertex(int vertex) {
+	return G[vertex];	
+}
+
+void Graph::addEdge(int head, int tail, int weight) {
+	G[head].push_back(make_pair(tail, weight));
+}
+
+void Graph::printGraph() {
+	cout<<"adj list rep of graph.."<<endl;
+	for (int i = 0; i < vertex_size; i++) {
+		cout<<i<<" -> ";
+		for (int j = 0; j < G[i].size(); j++)
+			cout<<G[i][j].first<<" ";
+		cout<<endl;
+	}
+}
+
+void Graph::BFS(int source) {
+	cout<<endl<<"BFS traversal: ";
+	bool* visited = new bool[vertex_size];
+	// mark all vertices as not visited initially
+	for (int i = 0; i < vertex_size; i++)
 		visited[i] = false;
 	// make an empty queue
-	list<Vertex> queue;
-	
-	// mark source as visited and enqueue it
-	visited[s->id] = true;
-	queue.push_back(*s);
-	
-	list<Vertex>::iterator itr;
+	deque<int> queue;
+	visited[source] = true;
+	queue.push_back(source);
 	while (!queue.empty()) {
-		Vertex* ptr;
-		ptr = &(queue.front());
-		cout<<ptr->id<<" ";
+		// dequeue a vertex from queue and print it
+		source = queue.front();
+		cout<<source<<" ";
 		queue.pop_front();
-		for (itr = G->adj[ptr->id].begin(); itr != G->adj[ptr->id].end(); itr++)
-			if (!visited[itr->id]) {
-				visited[itr->id] = true;
-				queue.push_back(*itr);
+		// iterator for elements of adj list i.e of type pair
+		vector<pair<int,int> >::iterator i;
+		for (i = G[source].begin(); i < G[source].end(); i++)
+			if (!visited[i->first]) {
+				visited[i->first] = true;
+				queue.push_back(i->first);
 			}
 	}
 }
 
-void addEdge(Graph* G, int u, int v) {
-	G->adj[u].push_back(Vertex(v));
-	return;
+void Graph::DFS(int source) {
+	cout<<endl<<"DFS traversal: ";
+	bool *visited = new bool[vertex_size];
+	for (int i = 0; i < vertex_size; i++)
+		visited[i] = false;
+	DfsUtil(source, visited);
 }
 
-void printGraph(Graph* G) {
-	list<Vertex>::iterator itr;
-	for (int i = 0; i < G->V; i++) {
-		cout<<"\nAdjacency list of vertex "<<i<<"\nHead";
-		for (itr = G->adj[i].begin(); itr != G->adj[i].end(); itr++)
-			cout<<" -> "<<itr->id;
-	}
-	return;
+void Graph::DfsUtil(int source, bool* visited) {
+	visited[source] = true;
+	cout<<source<<" ";
+	vector<pair<int,int> >::iterator i;
+	for (i = G[source].begin(); i != G[source].end(); i++)
+		if (!visited[i->first])
+			DfsUtil(i->first, visited);
 }
 
 int main() {
-	// create the graph
-    int V = 5;
-    Graph* G = new Graph(V);
-    addEdge(G, 0, 1);
-    addEdge(G, 0, 4);
-    addEdge(G, 1, 2);
-    addEdge(G, 1, 3);
-    addEdge(G, 1, 4);
-    addEdge(G, 2, 3);
-    addEdge(G, 3, 4);
- 
-    // print the adjacency list representation of the above graph
-    printGraph(G);
-    cout<<endl;
-    list<Vertex>::iterator ptr = G->adj[0].begin();
-    BFS(G, ptr);
-    cout<<endl;
+	Graph* G = new Graph(5);
+	// adding edges
+	G->addEdge(0,1,1);
+	G->addEdge(0,4,1);
+	G->addEdge(1,2,1);
+	G->addEdge(1,3,1);
+	G->addEdge(1,4,1);
+	G->addEdge(2,4,1);
+	G->addEdge(2,3,1);
+	G->addEdge(3,4,1);
+	G->printGraph();
+
+	G->BFS(1);
+	G->DFS(1);
+	cout<<endl<<endl;
 	return 0;
 }
