@@ -10,8 +10,7 @@ void printReverseArr(int *arr, int size);
 int bigMultiply(string str, int n, int *result) {
     int i, x, digits = 0, carry = 0;
     for (i = 0; i < str.length(); i++) {
-        // str[i]-48 is for adjusting ASCII value
-        x = ( (str[i]-48) * n ) + carry;
+        x = ( (str[i]-'0') * n ) + carry;
         result[i] = x % 10;
         digits++;
         carry = x/10;
