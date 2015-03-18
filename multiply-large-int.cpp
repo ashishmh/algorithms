@@ -36,6 +36,7 @@ int main() {
     int digits;                 // gets no of digits in result
     digits = bigMultiply(str, n, result);
     printReverseArr(result, digits);
+    cout<<endl<<"no of digits: "<<digits;
     cout<<endl;
     return 0;
 }
